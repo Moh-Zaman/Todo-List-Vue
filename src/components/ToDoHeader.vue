@@ -22,14 +22,12 @@ import accessibilityBtn from "../assets/images/icon-moon.svg"
 .header-title-wrapper {
     display: flex;
     margin-top: 120px;
-    margin-left: 200px;
-    margin-right: 200px;
 }
 
 .header-title-wrapper img {
     height: 26px;
     width: 26px;
-    padding-left: 100px;
+    /* padding-left: 100px; */
     margin-top: 40px;
     cursor: pointer;
 }

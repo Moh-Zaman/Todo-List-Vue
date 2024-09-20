@@ -25,7 +25,6 @@
 .input-form-wrapper {
     display: flex;
     position: relative;
-    cursor: pointer;
     font-size: 18px;
 }
 
