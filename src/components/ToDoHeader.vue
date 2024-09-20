@@ -30,8 +30,8 @@ import accessibilityBtn from "../assets/images/icon-moon.svg"
     height: 26px;
     width: 26px;
     padding-left: 100px;
-    margin-top: 26px
-    
+    margin-top: 40px;
+    cursor: pointer;
 }
 
 .header-title-text {
