@@ -61,9 +61,8 @@
     height: 100%;
     background-color: transparent;
     border-radius: 50%;
-    border: 2px solid hsl(234, 11%, 52%);
+    border: 1px solid hsl(234, 11%, 52%);
     display: inline-block;
-    position: relative;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 

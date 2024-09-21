@@ -1,10 +1,13 @@
 <template>
 <section>
-  <section class="task-list-wrapper">
+  <section class="task-header-wrapper">
     <ToDoHeader />
   </section>
   <section class="task-input-wrapper">
     <ToDoInput />
+  </section>
+  <section class="task-list-wrapper">
+    
   </section>
 </section>
 </template>
@@ -23,7 +26,7 @@ import ToDoInput from './components/ToDoInput.vue';
 </script>
 
 <style>
-.task-list-wrapper {
+.task-header-wrapper {
   display: flex;
   justify-content: center;
 }
