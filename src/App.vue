@@ -3,8 +3,9 @@
   <section class="task-list-wrapper">
     <ToDoHeader />
   </section>
-  <section class="task-input-wrapper">
+  <section>
     <ToDoInput />
+    
   </section>
 </section>
 </template>
@@ -28,12 +29,5 @@ import ToDoInput from './components/ToDoInput.vue';
   justify-content: center;
 }
 
-.task-input-wrapper {
-  display: flex;
-  border-radius: 5px;
-  background: hsl(235, 24%, 19%);
-  padding: 20px;
-  width: 500px;
-  margin: auto;
-}
+
 </style>
