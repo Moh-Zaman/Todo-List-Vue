@@ -16,37 +16,55 @@
         </form>
     </section>
     <br>
-    <section class="task-input-wrapper input-form-wrapper">
+    <section 
+        class="task-input-wrapper input-form-wrapper"
+        v-bind:class="hideListAll"
+        >
         <ul class="list-wrapper">
             <li 
-                v-for="(task, i) in tasks" 
-                v-bind:key="i"
-                @click="toggleCompleted(i)"
+                v-for="(task, i) in filteredTasks" 
+                v-bind:key="task.id"
                 >
                 <label class="checkbox-container-list">
-                <input
-                    class="input-checkbox-field"
-                    type="checkbox">
-                <span class="checkmark">
-                </span>
+                    <input
+                        class="input-checkbox-field"
+                        type="checkbox"
+                        v-model="task.complete"
+                        @click="toggleCompleted(i)">
+                    <span class="checkmark">
+                    </span>
             </label>
-            <span v-bind:class="{ 'completed-task' : task.complete}">
+            <span v-bind:class="{'completed-task' : task.complete}">
                 {{ task.name }}
+            </span>
+            <span 
+            class="crossBtnIcon"
+            @click="deleteOneTask(i)">
+                <img v-bind:src="crossBtn">
             </span>
             </li>
         </ul>
     </section>
-    <section class="task-input-wrapper footer-wrapper">
+    <section 
+        class="task-input-wrapper footer-wrapper"
+        v-bind:class="hideListAll"
+        >
         <span>
             {{ taskCount }} Remaining
         </span>
-        <span class="footer-middle-text">
+        <span 
+            class="footer-middle-text"
+            @click="showAll">
             All
         </span>
-        <span class="footer-middle-text">
+        <span 
+            class="footer-middle-text"
+            @click="showActive">
             Active
         </span>
-        <span class="footer-middle-text">
+        <span 
+            class="footer-middle-text"
+            @click="showCompleted">
             Completed
         </span>
         <span 
@@ -58,6 +76,8 @@
 </template>
 
 <script>
+import cross from "../assets/images/icon-cross.svg"
+
     export default {
         name: "ToDoInput",
         data() {
@@ -79,12 +99,14 @@
                         name: "Placeholder 3",
                         complete: true
                     }
-                ]
+                ],
+                filter: "all",
+                crossBtn: cross
             }
         },
         computed: {
             taskCount() {
-                return this.tasks.length 
+                return this.tasks.filter(task => !task.complete).length
             },
             newTaskObject() {
                 return {
@@ -92,7 +114,19 @@
                     name: this.newTask,
                     complete: false
                 }
-            }
+            },
+            filteredTasks() {
+                if (this.filter === "active") {
+                    return this.tasks.filter(task => !task.complete)
+                } else if (this.filter === "completed") {
+                    return this.tasks.filter(task => task.complete)
+                } else return this.tasks
+            },
+            hideListAll() {
+                return {
+                    "task-list-hide": this.tasks.length === 0
+                }
+            },
         },
         methods: {
             addTaskHandler() {
@@ -104,11 +138,23 @@
                 };
             },
             deleteTasks() {
-                this.tasks = []
+                this.tasks = this.tasks.filter(task => !task.complete)
             },
             toggleCompleted(i) {
                 this.tasks[i].complete = !this.tasks[i].complete
                 console.log(this.tasks[i].complete)
+            },
+            showAll() {
+                this.filter = "all"
+            },
+            showActive() {
+                this.filter = "active"
+            },
+            showCompleted() {
+                this.filter = "completed"
+            },
+            deleteOneTask(i) {
+                this.tasks.splice(i, 1)
             }
             
         },
@@ -118,12 +164,12 @@
 
 <style>
 .task-input-wrapper {
-  display: flex;
-  border-radius: 5px;
-  background: hsl(235, 24%, 19%);
-  padding: 20px;
-  width: 500px;
-  margin: auto;
+    display: flex;
+    border-radius: 5px;
+    background: hsl(235, 24%, 19%);
+    padding: 20px;
+    width: 500px;
+    margin: auto;
 }
 
 .input-form-wrapper {
@@ -211,7 +257,11 @@ ul {
     border-bottom: 1px solid rgba(255, 255, 255, 0.356);
     padding-bottom: 25px;
     width: 100%;
+    justify-content: space-between;
+    position: relative
 }
+
+
 
 .checkbox-container-list {
     display: inline-block;
@@ -240,5 +290,20 @@ ul {
 .completed-task {
     text-decoration: line-through;
     color: hsl(234, 11%, 52%);
+}
+
+.task-list-hide {
+    display: none
+}
+
+.crossBtnIcon {
+    cursor: pointer;
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.list-wrapper li:hover .crossBtnIcon {
+    opacity: 1;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <section class="header-title-wrapper">
         <h1 class="header-title-text">T O D O</h1>
-        <img :src="accessibilityBtn"/>
+        <img v-bind:src="accessibilityBtn"/>
     </section>
 </template>
 
