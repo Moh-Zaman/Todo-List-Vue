@@ -1,19 +1,39 @@
 <template>
     <section class="header-title-wrapper">
         <h1 class="header-title-text">T O D O</h1>
-        <img v-bind:src="accessibilityBtn"/>
+        <img 
+        v-bind:src="modeImg"
+        @click="toggleModeHandler"/>
     </section>
 </template>
 
 <script>
-import accessibilityBtn from "../assets/images/icon-moon.svg"
+import moonBtn from "../assets/images/icon-moon.svg"
+import sunBtn from "../assets/images/icon-sun.svg"
 
     export default {
         name: "ToDoHeader",
         data() {
             return {
-                accessibilityBtn: accessibilityBtn
+                mode: false,
+                modeImg: moonBtn
             }
+        },
+        methods: {
+            toggleModeHandler() {
+                this.mode = !this.mode
+                this.modeImg = this.mode ? sunBtn : moonBtn
+                console.log(this.mode)
+            }
+        },
+        computed: {
+            // toggleMode() {
+            //     if(this.mode === false) {
+            //         return this.modeImg = moonBtn
+            //     } else if(this.mode === true) {
+            //         return this.modeImg = sunBtn
+            //     }
+            // }
         },
     }
 </script>

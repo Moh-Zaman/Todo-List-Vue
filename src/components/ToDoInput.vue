@@ -4,7 +4,9 @@
             <label class="checkbox-container">
                 <input
                     class="input-checkbox-field"
-                    type="checkbox">
+                    type="checkbox"
+                    v-model="isChecked"
+                    @change="toggleAllTasks">
                 <span class="checkmark"></span>
             </label>
             <input 
@@ -101,7 +103,8 @@ import cross from "../assets/images/icon-cross.svg"
                     }
                 ],
                 filter: "all",
-                crossBtn: cross
+                crossBtn: cross,
+                isChecked: false
             }
         },
         computed: {
@@ -135,13 +138,15 @@ import cross from "../assets/images/icon-cross.svg"
                 } else {
                     this.tasks.push(this.newTaskObject);
                     this.newTask = "";
+                    this.isChecked = false
                 };
             },
             deleteTasks() {
                 this.tasks = this.tasks.filter(task => !task.complete)
             },
             toggleCompleted(i) {
-                this.tasks[i].complete = !this.tasks[i].complete
+                this.tasks[i].complete = !this.tasks[i].complete;
+                this.isChecked = this.tasks.every(task => task.complete);
                 console.log(this.tasks[i].complete)
             },
             showAll() {
@@ -155,6 +160,9 @@ import cross from "../assets/images/icon-cross.svg"
             },
             deleteOneTask(i) {
                 this.tasks.splice(i, 1)
+            },
+            toggleAllTasks() {
+                this.tasks.forEach(task => task.complete = this.isChecked)
             }
             
         },
