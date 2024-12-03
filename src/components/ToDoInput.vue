@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import cross from "../assets/images/icon-cross.svg"
 import ToDoList from "./ToDoList.vue";
 
     export default {
@@ -57,24 +56,18 @@ import ToDoList from "./ToDoList.vue";
                 ],
             }
         },
-        computed: {
-            newTaskObject() {
-                return {
-                    id: this.randomNumberGen(),
-                    name: this.newTask,
-                    complete: false
-                }
-            },
-        },
         methods: {
             addTaskHandler() {
-                if (!this.newTask) {
-                    return;
-                } else {
-                    this.tasks.push(this.newTaskObject);
-                    this.newTask = "";
-                    this.isChecked = false
-                };
+                const trimmedName = this.newTask.trim();
+                if (trimmedName) {
+                    this.tasks.push({
+                        id: this.randomNumberGen(),
+                        name: trimmedName,
+                        complete: false
+                    })
+                }
+                this.newTask = "";
+                this.isChecked = false;
             },
             parentDeleteTasks() {
                 this.tasks = this.tasks.filter(task => !task.complete)
