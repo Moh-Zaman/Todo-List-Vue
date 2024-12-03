@@ -51,7 +51,7 @@
     </section>
 </div>
     <section 
-        class="task-input-wrapper footer-wrapper"
+        class="footer-selection-wrapper footer-wrapper"
         :class="hideListAll"
         >
         <span>
@@ -59,16 +59,19 @@
         </span>
         <span 
             class="footer-middle-text"
+            :class="{'highlight-selection' : this.filter == 'all'}"
             @click="showList('all')">
             All
         </span>
         <span 
             class="footer-middle-text"
+            :class="{'highlight-selection' : this.filter == 'active'}"
             @click="showList('active')">
             Active
         </span>
         <span 
             class="footer-middle-text"
+            :class="{'highlight-selection' : this.filter == 'completed'}"
             @click="showList('completed')">
             Completed
         </span>
@@ -185,7 +188,16 @@ import cross from "../assets/images/icon-cross.svg"
 <style>
 .task-input-wrapper {
     display: flex;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
+    background: hsl(235, 24%, 19%);
+    padding: 20px;
+    width: 500px;
+    margin: auto;
+}
+
+.footer-selection-wrapper {
+    display: flex;
+    border-radius: 0 0 5px 5px;
     background: hsl(235, 24%, 19%);
     padding: 20px;
     width: 500px;
@@ -325,5 +337,9 @@ ul {
 
 .list-wrapper li:hover .crossBtnIcon {
     opacity: 1;
+}
+
+.highlight-selection {
+    color: rgb(166, 166, 221)
 }
 </style>
