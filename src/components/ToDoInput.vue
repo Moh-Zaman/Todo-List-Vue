@@ -59,17 +59,17 @@
         </span>
         <span 
             class="footer-middle-text"
-            @click="showAll">
+            @click="showList('all')">
             All
         </span>
         <span 
             class="footer-middle-text"
-            @click="showActive">
+            @click="showList('active')">
             Active
         </span>
         <span 
             class="footer-middle-text"
-            @click="showCompleted">
+            @click="showList('completed')">
             Completed
         </span>
         <span 
@@ -90,17 +90,17 @@ import cross from "../assets/images/icon-cross.svg"
                 newTask: "",
                 tasks: [
                     {
-                        id: this.RandomNumberGen() + 1,
+                        id: this.randomNumberGen() + 1,
                         name: "Placeholder 1",
                         complete: false                        
                     },
                     {
-                        id: this.RandomNumberGen() + 2,
+                        id: this.randomNumberGen() + 2,
                         name: "Placeholder 2",
                         complete: true
                     },
                     {
-                        id: this.RandomNumberGen() + 3,
+                        id: this.randomNumberGen() + 3,
                         name: "Placeholder 3",
                         complete: true
                     }
@@ -116,7 +116,7 @@ import cross from "../assets/images/icon-cross.svg"
             },
             newTaskObject() {
                 return {
-                    id: this.RandomNumberGen(),
+                    id: this.randomNumberGen(),
                     name: this.newTask,
                     complete: false
                 }
@@ -153,25 +153,30 @@ import cross from "../assets/images/icon-cross.svg"
                 this.isChecked = this.tasks.every(task => task.complete);
                 console.log(id)
             },
-            showAll() {
-                this.filter = "all"
-                // Combine these methods into a switch case
-            },
-            showActive() {
-                this.filter = "active"
-            },
-            showCompleted() {
-                this.filter = "completed"
-            },
             deleteOneTask(i) {
                 this.tasks.splice(i, 1)
             },
             toggleAllTasks() {
                 this.tasks.forEach(task => task.complete = this.isChecked)
             },
-            RandomNumberGen() {
+            randomNumberGen() {
                 return Date.now() + Math.floor(Math.random())
-            },            
+            },
+            showList(display) {
+                switch(display) {
+                    case 'all':
+                        this.filter = "all";
+                        break;
+                    case 'active':
+                        this.filter = "active";
+                        break;
+                    case 'completed':
+                        this.filter = "completed";
+                        break;
+                    default:
+                        this.filter = "all"
+                }
+            },          
         },
     }
 </script>
