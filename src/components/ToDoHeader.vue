@@ -22,17 +22,11 @@ import sunBtn from "../assets/images/icon-sun.svg"
         methods: {
             toggleModeHandler() {
                 this.mode = !this.mode
-                // this.modeImg = this.mode ? sunBtn : moonBtn
-                // console.log(this.mode)
             }
         },
         computed: {
             themeMode() {
-                if(this.mode === false) {
-                    return moonBtn
-                } else if(this.mode === true) {
-                    return sunBtn
-                }
+                return this.mode ? sunBtn : moonBtn
             }
         },
     }

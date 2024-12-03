@@ -1,23 +1,4 @@
 <template>
-    <section class="task-input-wrapper">
-        <form class="input-form-wrapper" @submit.prevent>
-            <label class="checkbox-container">
-                <input
-                    class="input-checkbox-field"
-                    type="checkbox"
-                    v-model="isChecked"
-                    @change="toggleAllTasks">
-                <span class="checkmark"></span>
-            </label>
-            <input 
-                v-model="newTask"
-                @keyup.enter="addTaskHandler"
-                class="input-text-field"
-                :placeholder="'Enter Tasks Here'"
-                type="text">
-        </form>
-    </section>
-    <br>
 <div>
     <section 
         class="task-list-wrapper input-form-wrapper"
@@ -87,7 +68,7 @@
 import cross from "../assets/images/icon-cross.svg"
 
     export default {
-        name: "ToDoInput",
+        name: "ToDoList",
         data() {
             return {
                 newTask: "",
