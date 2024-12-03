@@ -5,6 +5,7 @@
   </section>
   <section>
     <ToDoInput />
+    <ToDoList />
   </section>
 </section>
 </template>

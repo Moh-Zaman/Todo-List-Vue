@@ -18,7 +18,7 @@
         </form>
     </section>
     <br>
-<div>
+<!-- <div>
     <section 
         class="task-list-wrapper input-form-wrapper"
         :class="hideListAll"
@@ -49,8 +49,8 @@
             </li>
         </ul>
     </section>
-</div>
-    <section 
+</div> -->
+    <!-- <section 
         class="footer-selection-wrapper footer-wrapper"
         :class="hideListAll"
         >
@@ -80,7 +80,7 @@
             @click="deleteTasks">
             Clear Completed
         </span>
-    </section>
+    </section> -->
 </template>
 
 <script>
