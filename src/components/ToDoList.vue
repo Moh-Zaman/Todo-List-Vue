@@ -14,7 +14,7 @@
                         class="input-checkbox-field"
                         type="checkbox"
                         v-model="task.complete"
-                        @click="toggleCompleted(task.id)"
+                        @click="childToggleCompleted(id)"
                         >
                     <span class="checkmark">
                     </span>
@@ -24,7 +24,7 @@
             </span>
             <span 
             class="crossBtnIcon"
-            @click="deleteOneTask(i)">
+            @click="childDeleteOneTask(i)">
                 <img :src="crossBtn">
             </span>
             </li>
@@ -58,7 +58,7 @@
         </span>
         <span 
             class="footer-clear-text"
-            @click="deleteTasks">
+            @click="childDeleteTasks">
             Clear Completed
         </span>
     </section>
@@ -72,23 +72,6 @@ import cross from "../assets/images/icon-cross.svg"
         data() {
             return {
                 newTask: "",
-                tasks: [
-                    {
-                        id: this.randomNumberGen() + 1,
-                        name: "Placeholder 1",
-                        complete: false                        
-                    },
-                    {
-                        id: this.randomNumberGen() + 2,
-                        name: "Placeholder 2",
-                        complete: true
-                    },
-                    {
-                        id: this.randomNumberGen() + 3,
-                        name: "Placeholder 3",
-                        complete: true
-                    }
-                ],
                 filter: "all",
                 crossBtn: cross,
                 isChecked: false
@@ -97,13 +80,6 @@ import cross from "../assets/images/icon-cross.svg"
         computed: {
             taskCount() {
                 return this.tasks.filter(task => !task.complete).length
-            },
-            newTaskObject() {
-                return {
-                    id: this.randomNumberGen(),
-                    name: this.newTask,
-                    complete: false
-                }
             },
             filteredTasks() {
                 if (this.filter === "active") {
@@ -119,32 +95,20 @@ import cross from "../assets/images/icon-cross.svg"
             },
         },
         methods: {
-            addTaskHandler() {
-                if (!this.newTask) {
-                    return;
-                } else {
-                    this.tasks.push(this.newTaskObject);
-                    this.newTask = "";
-                    this.isChecked = false
-                };
+            childDeleteTasks() {
+                // this.tasks = this.tasks.filter(task => !task.complete)
+                this.$emit('clear-completed')
             },
-            deleteTasks() {
-                this.tasks = this.tasks.filter(task => !task.complete)
+            childToggleCompleted(id) {
+                // const i = this.tasks.findIndex(task => task.id === id)
+                // this.tasks[i].complete = !this.tasks[i].complete;
+                // this.isChecked = this.tasks.every(task => task.complete);
+                // console.log(id)
+                this.$emit('toggle-completed', id);
             },
-            toggleCompleted(id) {
-                const i = this.tasks.findIndex(task => task.id === id)
-                this.tasks[i].complete = !this.tasks[i].complete;
-                this.isChecked = this.tasks.every(task => task.complete);
-                console.log(id)
-            },
-            deleteOneTask(i) {
-                this.tasks.splice(i, 1)
-            },
-            toggleAllTasks() {
-                this.tasks.forEach(task => task.complete = this.isChecked)
-            },
-            randomNumberGen() {
-                return Date.now() + Math.floor(Math.random())
+            childDeleteOneTask(i) {
+                // this.tasks.splice(i, 1)
+                this.$emit('delete-task', i)
             },
             showList(display) {
                 switch(display) {
@@ -162,20 +126,18 @@ import cross from "../assets/images/icon-cross.svg"
                 }
             },          
         },
+        props: {
+            tasks: {
+                type: Array,
+                required: true 
+            },
+        },
     }
 </script>
 
 
-<style>
-.task-input-wrapper {
-    display: flex;
-    border-radius: 5px;
-    background: hsl(235, 24%, 19%);
-    padding: 20px;
-    width: 500px;
-    margin: auto;
-}
 
+<style>
 .task-list-wrapper {
     display: flex;
     border-radius: 5px 5px 0 0;
@@ -194,38 +156,9 @@ import cross from "../assets/images/icon-cross.svg"
     margin: auto;
 }
 
-.input-form-wrapper {
-    display: flex;
-    position: relative;
-    font-size: 18px;
-}
-
-.input-text-field {
-    appearance: none;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: white;
-    text-align: left;
-    font-size: 18px;
-    caret-color: hsl(220, 98%, 61%);
-    vertical-align: middle;
-    padding-left: 20px;
-    width: 400px;
-}
-
 .input-checkbox-field {
     position: absolute;
     opacity: 0;
-}
-
-.checkbox-container {
-    display: inline-block;
-    position: relative;
-    width: 35px;
-    height: 35px;
-    margin-right: 10px;
-    cursor: pointer;
 }
 
 .checkmark {
@@ -255,10 +188,6 @@ import cross from "../assets/images/icon-cross.svg"
     transform: rotate(45deg);
 }
 
-.checkbox-container:hover .checkmark {
-    background-color: hsl(234, 11%, 85%);
-}
-
 ul {
     list-style-type: none;
 }
@@ -269,21 +198,19 @@ ul {
     margin: auto;
     width: 100%;
     padding: 0px;
-    vertical-align: middle
+    vertical-align: middle;
 }
 
 .list-wrapper li {
     display: flex;
     align-items: center;
-    color:white;
+    color: white;
     border-bottom: 1px solid rgba(255, 255, 255, 0.356);
     padding-bottom: 25px;
     width: 100%;
     justify-content: space-between;
-    position: relative
+    position: relative;
 }
-
-
 
 .checkbox-container-list {
     display: inline-block;
@@ -292,22 +219,21 @@ ul {
     height: 35px;
     margin-right: 30px;
     cursor: pointer;
-    
 }
 
 .footer-wrapper {
-    display:flex;
+    display: flex;
     justify-content: space-between;
     color: hsl(234, 11%, 52%);
 }
 
 .footer-middle-text {
     color: rgb(70, 70, 187);
-    cursor: pointer
+    cursor: pointer;
 }
 
 .footer-clear-text {
-    cursor: pointer
+    cursor: pointer;
 }
 
 .completed-task {
@@ -316,7 +242,7 @@ ul {
 }
 
 .task-list-hide {
-    display: none
+    display: none;
 }
 
 .crossBtnIcon {
@@ -334,7 +260,6 @@ ul {
     color: white;
     border: 2px solid white;
     border-radius: 5px;
-    padding: 0.01em 16px
-
+    padding: 0.01em 16px;
 }
 </style>

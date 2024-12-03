@@ -5,7 +5,6 @@
   </section>
   <section>
     <ToDoInput />
-    <ToDoList />
   </section>
 </section>
 </template>
@@ -13,14 +12,12 @@
 <script>
 import ToDoHeader from './components/ToDoHeader.vue';
 import ToDoInput from './components/ToDoInput.vue';
-import ToDoList from './components/ToDoList.vue';
 
   export default {
     name: "App",
     components: {
       ToDoHeader,
       ToDoInput,
-      ToDoList,
     },
   }
 </script>

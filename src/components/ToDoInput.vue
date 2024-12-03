@@ -18,79 +18,26 @@
         </form>
     </section>
     <br>
-<!-- <div>
-    <section 
-        class="task-list-wrapper input-form-wrapper"
-        :class="hideListAll"
-        >
-        <ul class="list-wrapper">
-            <li 
-                v-for="(task, i) in filteredTasks" 
-                :key="task.id"
-                >
-                <label class="checkbox-container-list">
-                    <input
-                        class="input-checkbox-field"
-                        type="checkbox"
-                        v-model="task.complete"
-                        @click="toggleCompleted(task.id)"
-                        >
-                    <span class="checkmark">
-                    </span>
-            </label>
-            <span :class="{'completed-task' : task.complete}">
-                {{ task.name }}
-            </span>
-            <span 
-            class="crossBtnIcon"
-            @click="deleteOneTask(i)">
-                <img :src="crossBtn">
-            </span>
-            </li>
-        </ul>
-    </section>
-</div> -->
-    <!-- <section 
-        class="footer-selection-wrapper footer-wrapper"
-        :class="hideListAll"
-        >
-        <span>
-            {{ taskCount }} Remaining
-        </span>
-        <span 
-            class="footer-middle-text"
-            :class="{'highlight-selection' : this.filter == 'all'}"
-            @click="showList('all')">
-            All
-        </span>
-        <span 
-            class="footer-middle-text"
-            :class="{'highlight-selection' : this.filter == 'active'}"
-            @click="showList('active')">
-            Active
-        </span>
-        <span 
-            class="footer-middle-text"
-            :class="{'highlight-selection' : this.filter == 'completed'}"
-            @click="showList('completed')">
-            Completed
-        </span>
-        <span 
-            class="footer-clear-text"
-            @click="deleteTasks">
-            Clear Completed
-        </span>
-    </section> -->
+    <ToDoList
+        :tasks="tasks"
+        @toggle-completed="parentToggleCompleted"
+        @delete-task="parentDeleteOneTask"
+        @clear-completed="parentDeleteTasks" />
 </template>
 
 <script>
 import cross from "../assets/images/icon-cross.svg"
+import ToDoList from "./ToDoList.vue";
 
     export default {
         name: "ToDoInput",
+        components: {
+            ToDoList,
+        },
         data() {
             return {
                 newTask: "",
+                isChecked: false,
                 tasks: [
                     {
                         id: this.randomNumberGen() + 1,
@@ -108,32 +55,14 @@ import cross from "../assets/images/icon-cross.svg"
                         complete: true
                     }
                 ],
-                filter: "all",
-                crossBtn: cross,
-                isChecked: false
             }
         },
         computed: {
-            taskCount() {
-                return this.tasks.filter(task => !task.complete).length
-            },
             newTaskObject() {
                 return {
                     id: this.randomNumberGen(),
                     name: this.newTask,
                     complete: false
-                }
-            },
-            filteredTasks() {
-                if (this.filter === "active") {
-                    return this.tasks.filter(task => !task.complete)
-                } else if (this.filter === "completed") {
-                    return this.tasks.filter(task => task.complete)
-                } else return this.tasks
-            },
-            hideListAll() {
-                return {
-                    "task-list-hide": this.tasks.length === 0
                 }
             },
         },
@@ -147,16 +76,17 @@ import cross from "../assets/images/icon-cross.svg"
                     this.isChecked = false
                 };
             },
-            deleteTasks() {
+            parentDeleteTasks() {
                 this.tasks = this.tasks.filter(task => !task.complete)
             },
-            toggleCompleted(id) {
+            parentToggleCompleted(id) {
                 const i = this.tasks.findIndex(task => task.id === id)
-                this.tasks[i].complete = !this.tasks[i].complete;
+                if (i !== -1) {
+                    this.tasks[i].complete = !this.tasks[i].complete;
                 this.isChecked = this.tasks.every(task => task.complete);
-                console.log(id)
+                }                
             },
-            deleteOneTask(i) {
+            parentDeleteOneTask(i) {
                 this.tasks.splice(i, 1)
             },
             toggleAllTasks() {
@@ -164,22 +94,7 @@ import cross from "../assets/images/icon-cross.svg"
             },
             randomNumberGen() {
                 return Date.now() + Math.floor(Math.random())
-            },
-            showList(display) {
-                switch(display) {
-                    case 'all':
-                        this.filter = "all";
-                        break;
-                    case 'active':
-                        this.filter = "active";
-                        break;
-                    case 'completed':
-                        this.filter = "completed";
-                        break;
-                    default:
-                        this.filter = "all"
-                }
-            },          
+            },         
         },
     }
 </script>
@@ -189,24 +104,6 @@ import cross from "../assets/images/icon-cross.svg"
 .task-input-wrapper {
     display: flex;
     border-radius: 5px;
-    background: hsl(235, 24%, 19%);
-    padding: 20px;
-    width: 500px;
-    margin: auto;
-}
-
-.task-list-wrapper {
-    display: flex;
-    border-radius: 5px 5px 0 0;
-    background: hsl(235, 24%, 19%);
-    padding: 20px;
-    width: 500px;
-    margin: auto;
-}
-
-.footer-selection-wrapper {
-    display: flex;
-    border-radius: 0 0 5px 5px;
     background: hsl(235, 24%, 19%);
     padding: 20px;
     width: 500px;
@@ -277,83 +174,5 @@ import cross from "../assets/images/icon-cross.svg"
 .checkbox-container:hover .checkmark {
     background-color: hsl(234, 11%, 85%);
 }
-
-ul {
-    list-style-type: none;
-}
-
-.list-wrapper {
-    display: grid;
-    row-gap: 30px;
-    margin: auto;
-    width: 100%;
-    padding: 0px;
-    vertical-align: middle
-}
-
-.list-wrapper li {
-    display: flex;
-    align-items: center;
-    color:white;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.356);
-    padding-bottom: 25px;
-    width: 100%;
-    justify-content: space-between;
-    position: relative
-}
-
-
-
-.checkbox-container-list {
-    display: inline-block;
-    position: relative;
-    width: 35px;
-    height: 35px;
-    margin-right: 30px;
-    cursor: pointer;
-    
-}
-
-.footer-wrapper {
-    display:flex;
-    justify-content: space-between;
-    color: hsl(234, 11%, 52%);
-}
-
-.footer-middle-text {
-    color: rgb(70, 70, 187);
-    cursor: pointer
-}
-
-.footer-clear-text {
-    cursor: pointer
-}
-
-.completed-task {
-    text-decoration: line-through;
-    color: hsl(234, 11%, 52%);
-}
-
-.task-list-hide {
-    display: none
-}
-
-.crossBtnIcon {
-    cursor: pointer;
-    margin-left: auto;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.list-wrapper li:hover .crossBtnIcon {
-    opacity: 1;
-}
-
-.highlight-selection {
-    color: white;
-    border: 2px solid white;
-    border-radius: 5px;
-    padding: 0.01em 16px
-
-}
 </style>
+
