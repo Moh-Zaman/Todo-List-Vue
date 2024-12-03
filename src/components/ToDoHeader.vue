@@ -2,7 +2,7 @@
     <section class="header-title-wrapper">
         <h1 class="header-title-text">T O D O</h1>
         <img 
-        v-bind:src="modeImg"
+        :src="themeMode"
         @click="toggleModeHandler"/>
     </section>
 </template>
@@ -22,18 +22,18 @@ import sunBtn from "../assets/images/icon-sun.svg"
         methods: {
             toggleModeHandler() {
                 this.mode = !this.mode
-                this.modeImg = this.mode ? sunBtn : moonBtn
-                console.log(this.mode)
+                // this.modeImg = this.mode ? sunBtn : moonBtn
+                // console.log(this.mode)
             }
         },
         computed: {
-            // toggleMode() {
-            //     if(this.mode === false) {
-            //         return this.modeImg = moonBtn
-            //     } else if(this.mode === true) {
-            //         return this.modeImg = sunBtn
-            //     }
-            // }
+            themeMode() {
+                if(this.mode === false) {
+                    return moonBtn
+                } else if(this.mode === true) {
+                    return sunBtn
+                }
+            }
         },
     }
 </script>

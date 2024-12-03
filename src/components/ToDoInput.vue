@@ -18,38 +18,41 @@
         </form>
     </section>
     <br>
+<div>
     <section 
         class="task-input-wrapper input-form-wrapper"
-        v-bind:class="hideListAll"
+        :class="hideListAll"
         >
         <ul class="list-wrapper">
             <li 
                 v-for="(task, i) in filteredTasks" 
-                v-bind:key="task.id"
+                :key="task.id"
                 >
                 <label class="checkbox-container-list">
                     <input
                         class="input-checkbox-field"
                         type="checkbox"
                         v-model="task.complete"
-                        @click="toggleCompleted(i)">
+                        @click="toggleCompleted(task.id)"
+                        >
                     <span class="checkmark">
                     </span>
             </label>
-            <span v-bind:class="{'completed-task' : task.complete}">
+            <span :class="{'completed-task' : task.complete}">
                 {{ task.name }}
             </span>
             <span 
             class="crossBtnIcon"
             @click="deleteOneTask(i)">
-                <img v-bind:src="crossBtn">
+                <img :src="crossBtn">
             </span>
             </li>
         </ul>
     </section>
+</div>
     <section 
         class="task-input-wrapper footer-wrapper"
-        v-bind:class="hideListAll"
+        :class="hideListAll"
         >
         <span>
             {{ taskCount }} Remaining
@@ -87,17 +90,17 @@ import cross from "../assets/images/icon-cross.svg"
                 newTask: "",
                 tasks: [
                     {
-                        id: 1,
+                        id: this.RandomNumberGen() + 1,
                         name: "Placeholder 1",
                         complete: false                        
                     },
                     {
-                        id: 2,
+                        id: this.RandomNumberGen() + 2,
                         name: "Placeholder 2",
                         complete: true
                     },
                     {
-                        id: 3,
+                        id: this.RandomNumberGen() + 3,
                         name: "Placeholder 3",
                         complete: true
                     }
@@ -113,7 +116,7 @@ import cross from "../assets/images/icon-cross.svg"
             },
             newTaskObject() {
                 return {
-                    id: this.tasks.length + 1,
+                    id: this.RandomNumberGen(),
                     name: this.newTask,
                     complete: false
                 }
@@ -144,13 +147,15 @@ import cross from "../assets/images/icon-cross.svg"
             deleteTasks() {
                 this.tasks = this.tasks.filter(task => !task.complete)
             },
-            toggleCompleted(i) {
+            toggleCompleted(id) {
+                const i = this.tasks.findIndex(task => task.id === id)
                 this.tasks[i].complete = !this.tasks[i].complete;
                 this.isChecked = this.tasks.every(task => task.complete);
-                console.log(this.tasks[i].complete)
+                console.log(id)
             },
             showAll() {
                 this.filter = "all"
+                // Combine these methods into a switch case
             },
             showActive() {
                 this.filter = "active"
@@ -163,8 +168,10 @@ import cross from "../assets/images/icon-cross.svg"
             },
             toggleAllTasks() {
                 this.tasks.forEach(task => task.complete = this.isChecked)
-            }
-            
+            },
+            RandomNumberGen() {
+                return Date.now() + Math.floor(Math.random())
+            },            
         },
     }
 </script>

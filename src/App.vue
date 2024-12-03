@@ -1,11 +1,11 @@
 <template>
 <section>
   <section class="task-header-wrapper">
-    <ToDoHeader />
+    <ToDoHeader /> 
   </section>
   <section>
     <ToDoInput />
-    
+    <!-- Split this up Todo Input and Todo List -->
   </section>
   <section class="task-list-wrapper">
     
