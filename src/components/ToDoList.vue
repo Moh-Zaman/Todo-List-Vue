@@ -2,20 +2,20 @@
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
       <ul class="list-wrapper">
-        <li v-for="(task, i) in filteredTasks" :key="task.id">
+        <li v-for="(task) in filteredTasks" :key="task.id">
           <label class="checkbox-container-list">
             <input
               class="input-checkbox-field"
               type="checkbox"
               v-model="task.complete"
-              @click="childToggleCompleted(id)"
+              @click="childToggleCompleted(task.id)"
             />
             <span class="checkmark"> </span>
           </label>
           <span :class="{ 'completed-task': task.complete }">
             {{ task.name }}
           </span>
-          <span class="crossBtnIcon" @click="childDeleteOneTask(i)">
+          <span class="crossBtnIcon" @click="childDeleteOneTask(task.id)">
             <img :src="crossBtn" />
           </span>
         </li>
@@ -93,23 +93,21 @@ export default {
       // console.log(id)
       this.$emit("toggle-completed", id);
     },
-    childDeleteOneTask(i) {
+    childDeleteOneTask(id) {
       // this.tasks.splice(i, 1)
-      this.$emit("delete-task", i);
+      this.$emit("delete-task", id);
     },
     showList(display) {
       switch (display) {
-        case "all":
-          this.filter = "all";
-          break;
         case "active":
           this.filter = "active";
           break;
         case "completed":
           this.filter = "completed";
           break;
-        default:
-          this.filter = "all";
+          case "all":
+            default:
+            this.filter = "all";
       }
     },
   },

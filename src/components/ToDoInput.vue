@@ -5,14 +5,14 @@
         <input
           class="input-checkbox-field"
           type="checkbox"
-          v-model="isChecked"
-          @change="toggleAllTasks"
+          v-model="checked"
+          @change="toggleAll"
         />
         <span class="checkmark"></span>
       </label>
       <input
         v-model="newTask"
-        @keyup.enter="addTaskHandler"
+        @keyup.enter="addTask"
         class="input-text-field"
         :placeholder="'Enter Tasks Here'"
         type="text"
@@ -20,79 +20,48 @@
     </form>
   </section>
   <br />
-  <ToDoList
+  <!-- <ToDoList
     :tasks="tasks"
     @toggle-completed="parentToggleCompleted"
     @delete-task="parentDeleteOneTask"
     @clear-completed="parentDeleteTasks"
-  />
+  /> -->
 </template>
 
 <script>
-import ToDoList from "./ToDoList.vue";
+// import ToDoList from "./ToDoList.vue";
 
 export default {
   name: "ToDoInput",
-  components: {
-    ToDoList,
+  props: {
+    isChecked: Boolean
   },
   data() {
     return {
-      newTask: "",
-      isChecked: false,
-      tasks: [
-        {
-          id: this.randomNumberGen() + 1,
-          name: "Placeholder 1",
-          complete: false,
-        },
-        {
-          id: this.randomNumberGen() + 2,
-          name: "Placeholder 2",
-          complete: true,
-        },
-        {
-          id: this.randomNumberGen() + 3,
-          name: "Placeholder 3",
-          complete: true,
-        },
-      ],
-    };
+      newTask: ""
+    }
+  },
+  computed: {
+    checked: {
+      get() {
+      return this.isChecked
+    },
+    set(value) {
+      this.$emit("toggle-all", value);
+    }
+  }
   },
   methods: {
-    addTaskHandler() {
-      const trimmedName = this.newTask.trim();
-      if (trimmedName) {
-        this.tasks.push({
-          id: this.randomNumberGen(),
-          name: trimmedName,
-          complete: false,
-        });
-      }
-      this.newTask = "";
-      this.isChecked = false;
+    addTask() {
+        this.$emit("add-task", this.newTask);
+        this.newTask = "";
     },
-    parentDeleteTasks() {
-      this.tasks = this.tasks.filter((task) => !task.complete);
-    },
-    parentToggleCompleted(id) {
-      const i = this.tasks.findIndex((task) => task.id === id);
-      if (i !== -1) {
-        this.tasks[i].complete = !this.tasks[i].complete;
-        this.isChecked = this.tasks.every((task) => task.complete);
-      }
-    },
-    parentDeleteOneTask(i) {
-      this.tasks.splice(i, 1);
-    },
-    toggleAllTasks() {
-      this.tasks.forEach((task) => (task.complete = this.isChecked));
-    },
-    randomNumberGen() {
-      return Date.now() + Math.floor(Math.random());
-    },
-  },
-};
+    toggleAll() {
+      this.$emit("toggle-all", this.checked)
+    }
+},
+}
+
 </script>
 
 <style>
