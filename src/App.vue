@@ -1,25 +1,25 @@
 <template>
-<section>
-  <section class="task-header-wrapper">
-    <ToDoHeader /> 
-  </section>
   <section>
-    <ToDoInput />
+    <section class="task-header-wrapper">
+      <ToDoHeader />
+    </section>
+    <section>
+      <ToDoInput />
+    </section>
   </section>
-</section>
 </template>
 
 <script>
-import ToDoHeader from './components/ToDoHeader.vue';
-import ToDoInput from './components/ToDoInput.vue';
+import ToDoHeader from "./components/ToDoHeader.vue";
+import ToDoInput from "./components/ToDoInput.vue";
 
-  export default {
-    name: "App",
-    components: {
-      ToDoHeader,
-      ToDoInput,
-    },
-  }
+export default {
+  name: "App",
+  components: {
+    ToDoHeader,
+    ToDoInput,
+  },
+};
 </script>
 
 <style>
@@ -27,6 +27,4 @@ import ToDoInput from './components/ToDoInput.vue';
   display: flex;
   justify-content: center;
 }
-
-
 </style>
