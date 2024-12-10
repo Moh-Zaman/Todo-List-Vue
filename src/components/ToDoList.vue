@@ -2,7 +2,7 @@
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
       <ul class="list-wrapper">
-        <li v-for="(task) in filteredTasks" :key="task.id">
+        <li v-for="task in filteredTasks" :key="task.id">
           <label class="checkbox-container-list">
             <input
               class="input-checkbox-field"
@@ -83,18 +83,12 @@ export default {
   },
   methods: {
     childDeleteTasks() {
-      // this.tasks = this.tasks.filter(task => !task.complete)
       this.$emit("clear-completed");
     },
     childToggleCompleted(id) {
-      // const i = this.tasks.findIndex(task => task.id === id)
-      // this.tasks[i].complete = !this.tasks[i].complete;
-      // this.isChecked = this.tasks.every(task => task.complete);
-      // console.log(id)
       this.$emit("toggle-completed", id);
     },
     childDeleteOneTask(id) {
-      // this.tasks.splice(i, 1)
       this.$emit("delete-task", id);
     },
     showList(display) {
@@ -105,9 +99,9 @@ export default {
         case "completed":
           this.filter = "completed";
           break;
-          case "all":
-            default:
-            this.filter = "all";
+        case "all":
+        default:
+          this.filter = "all";
       }
     },
   },

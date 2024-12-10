@@ -1,3 +1,1 @@
-export class TodoListClass {
-    
-}
+export class TodoListClass {}

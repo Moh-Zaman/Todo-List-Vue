@@ -4,12 +4,12 @@
       <ToDoHeader />
     </section>
     <section>
-      <ToDoInput 
-        @add-task="addTaskHandler" 
-        @toggle-all="toggleAllTasks" 
+      <ToDoInput
+        @add-task="addTaskHandler"
+        @toggle-all="toggleAllTasks"
         :is-checked="isChecked"
       />
-      <ToDoList 
+      <ToDoList
         :tasks="tasks"
         @toggle-completed="parentToggleCompleted"
         @delete-task="parentDeleteOneTask"
@@ -78,7 +78,7 @@ export default {
       }
     },
     parentDeleteOneTask(id) {
-      this.tasks = this.tasks.filter((task) =>  task.id !== id);
+      this.tasks = this.tasks.filter((task) => task.id !== id);
     },
     toggleAllTasks(isChecked) {
       this.isChecked = isChecked;

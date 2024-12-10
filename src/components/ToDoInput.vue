@@ -20,48 +20,39 @@
     </form>
   </section>
   <br />
-  <!-- <ToDoList
-    :tasks="tasks"
-    @toggle-completed="parentToggleCompleted"
-    @delete-task="parentDeleteOneTask"
-    @clear-completed="parentDeleteTasks"
-  /> -->
 </template>
 
 <script>
-// import ToDoList from "./ToDoList.vue";
-
 export default {
   name: "ToDoInput",
   props: {
-    isChecked: Boolean
+    isChecked: Boolean,
   },
   data() {
     return {
-      newTask: ""
-    }
+      newTask: "",
+    };
   },
   computed: {
     checked: {
       get() {
-      return this.isChecked
+        return this.isChecked;
+      },
+      set(value) {
+        this.$emit("toggle-all", value);
+      },
     },
-    set(value) {
-      this.$emit("toggle-all", value);
-    }
-  }
   },
   methods: {
     addTask() {
-        this.$emit("add-task", this.newTask);
-        this.newTask = "";
+      this.$emit("add-task", this.newTask);
+      this.newTask = "";
     },
     toggleAll() {
-      this.$emit("toggle-all", this.checked)
-    }
-},
-}
-
+      this.$emit("toggle-all", this.checked);
+    },
+  },
+};
 </script>
 
 <style>
