@@ -27,6 +27,7 @@ export default {
   name: "ToDoInput",
   props: {
     isChecked: Boolean,
+    taskList: Object,
   },
   data() {
     return {
@@ -44,13 +45,6 @@ export default {
     },
   },
   methods: {
-    addTask() {
-      this.$emit("add-task", this.newTask);
-      this.newTask = "";
-    },
-    toggleAll() {
-      this.$emit("toggle-all", this.checked);
-    },
   },
 };
 </script>

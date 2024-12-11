@@ -8,14 +8,14 @@
               class="input-checkbox-field"
               type="checkbox"
               v-model="task.complete"
-              @click="childToggleCompleted(task.id)"
+              @click="taskList.parentToggleCompleted(task.id)"
             />
             <span class="checkmark"> </span>
           </label>
           <span :class="{ 'completed-task': task.complete }">
             {{ task.name }}
           </span>
-          <span class="crossBtnIcon" @click="childDeleteOneTask(task.id)">
+          <span class="crossBtnIcon" @click="taskList.parentDeleteOneTask(task.id)">
             <img :src="crossBtn" />
           </span>
         </li>
@@ -45,7 +45,7 @@
     >
       Completed
     </span>
-    <span class="footer-clear-text" @click="childDeleteTasks">
+    <span class="footer-clear-text" @click="taskList.parentDeleteTasks()">
       Clear Completed
     </span>
   </section>
@@ -61,36 +61,26 @@ export default {
       newTask: "",
       filter: "all",
       crossBtn: cross,
-      isChecked: false,
     };
   },
   computed: {
     taskCount() {
-      return this.tasks.filter((task) => !task.complete).length;
+      return this.taskList.tasks.filter((task) => !task.complete).length;
     },
     filteredTasks() {
       if (this.filter === "active") {
-        return this.tasks.filter((task) => !task.complete);
+        return this.taskList.tasks.filter((task) => !task.complete);
       } else if (this.filter === "completed") {
-        return this.tasks.filter((task) => task.complete);
-      } else return this.tasks;
+        return this.taskList.tasks.filter((task) => task.complete);
+      } else return this.taskList.tasks;
     },
     hideListAll() {
       return {
-        "task-list-hide": this.tasks.length === 0,
+        "task-list-hide": this.taskList.tasks.length === 0,
       };
     },
   },
   methods: {
-    childDeleteTasks() {
-      this.$emit("clear-completed");
-    },
-    childToggleCompleted(id) {
-      this.$emit("toggle-completed", id);
-    },
-    childDeleteOneTask(id) {
-      this.$emit("delete-task", id);
-    },
     showList(display) {
       switch (display) {
         case "active":
@@ -106,10 +96,7 @@ export default {
     },
   },
   props: {
-    tasks: {
-      type: Array,
-      required: true,
-    },
+    taskList: Object,
   },
 };
 </script>
