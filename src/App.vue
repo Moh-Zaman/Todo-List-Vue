@@ -4,13 +4,8 @@
       <ToDoHeader />
     </section>
     <section>
-      <ToDoInput
-        :taskList="taskList"
-        :is-checked="isChecked"
-      />
-      <ToDoList
-        :taskList="taskList"
-      />
+      <ToDoInput :taskList="taskList" />
+      <ToDoList :taskList="taskList" />
     </section>
   </section>
 </template>
@@ -31,7 +26,6 @@ export default {
   data() {
     return {
       newTask: "",
-      isChecked: false,
       taskList: new TodoListClass([
         {
           id: 1,
@@ -48,18 +42,16 @@ export default {
           name: "Placeholder 3",
           complete: true,
         },
-      ])
+      ]),
     };
   },
-  methods: {
-
-  },
+  methods: {},
   mounted() {
-    console.log(this.taskList)
+    console.log(this.taskList);
   },
   updated() {
-    console.log("Updated")
-  }
+    console.log("Updated");
+  },
 };
 </script>
 

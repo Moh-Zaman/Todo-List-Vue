@@ -12,8 +12,6 @@ export class TodoListClass {
             complete: false,
           });
         }
-        newTask = "";
-        isChecked = false;
       }
 
       parentDeleteTasks() {
@@ -24,7 +22,6 @@ export class TodoListClass {
         const i = this.tasks.findIndex((task) => task.id === id);
         if (i !== -1) {
           this.tasks[i].complete = !this.tasks[i].complete;
-          this.isChecked = this.tasks.every((task) => task.complete);
         }
       }
 
@@ -32,9 +29,8 @@ export class TodoListClass {
         this.tasks = this.tasks.filter((task) => task.id !== id);
       }
 
-      toggleAllTasks(isChecked) {
-        this.isChecked = isChecked;
-        this.tasks.forEach((task) => (task.complete = this.isChecked));
+      toggleAllTasks(checked) {
+        this.tasks.forEach((task) => (task.complete = checked));
       }
 
       randomNumberGen() {

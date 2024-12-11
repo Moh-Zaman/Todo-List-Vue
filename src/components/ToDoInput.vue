@@ -5,8 +5,7 @@
         <input
           class="input-checkbox-field"
           type="checkbox"
-          v-model="checked"
-          @change="toggleAll"
+          @click="taskList.toggleAllTasks(true)"
         />
         <span class="checkmark"></span>
       </label>
@@ -26,7 +25,6 @@
 export default {
   name: "ToDoInput",
   props: {
-    isChecked: Boolean,
     taskList: Object,
   },
   data() {
@@ -34,17 +32,13 @@ export default {
       newTask: "",
     };
   },
-  computed: {
-    checked: {
-      get() {
-        return this.isChecked;
-      },
-      set(value) {
-        this.$emit("toggle-all", value);
-      },
-    },
-  },
   methods: {
+    addTask() {
+      if (this.newTask.trim()) {
+        this.taskList.addTaskHandler(this.newTask.trim());
+        this.newTask = "";
+      }
+    },
   },
 };
 </script>

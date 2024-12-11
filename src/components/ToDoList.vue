@@ -15,7 +15,10 @@
           <span :class="{ 'completed-task': task.complete }">
             {{ task.name }}
           </span>
-          <span class="crossBtnIcon" @click="taskList.parentDeleteOneTask(task.id)">
+          <span
+            class="crossBtnIcon"
+            @click="taskList.parentDeleteOneTask(task.id)"
+          >
             <img :src="crossBtn" />
           </span>
         </li>
