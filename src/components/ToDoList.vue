@@ -2,26 +2,11 @@
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
       <ul class="list-wrapper">
-        <li v-for="task in filteredTasks" :key="task.id">
-          <label class="checkbox-container-list">
-            <input
-              class="input-checkbox-field"
-              type="checkbox"
-              v-model="task.complete"
-              @click="taskList.parentToggleCompleted(task.id)"
-            />
-            <span class="checkmark"> </span>
-          </label>
-          <span :class="{ 'completed-task': task.complete }">
-            {{ task.name }}
-          </span>
-          <span
-            class="crossBtnIcon"
-            @click="taskList.parentDeleteOneTask(task.id)"
-          >
-            <img :src="crossBtn" />
-          </span>
-        </li>
+        <ToDoTasks
+          :taskList="taskList"
+          :filteredTasks="filteredTasks"
+          :crossBtn="crossBtn"
+        />
       </ul>
     </section>
   </div>
@@ -56,9 +41,13 @@
 
 <script>
 import cross from "../assets/images/icon-cross.svg";
+import ToDoTasks from "./ToDoTasks.vue";
 
 export default {
   name: "ToDoList",
+  components: {
+    ToDoTasks,
+  },
   data() {
     return {
       newTask: "",
