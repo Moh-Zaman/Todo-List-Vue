@@ -18,7 +18,6 @@
       />
     </form>
   </section>
-  <br />
 </template>
 
 <script>
@@ -51,6 +50,7 @@ export default {
   padding: 20px;
   width: 500px;
   margin: auto;
+  margin-bottom: 20px;
 }
 
 .input-form-wrapper {
