@@ -2,11 +2,9 @@
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
       <ul class="list-wrapper">
-        <ToDoTasks
-          :taskList="taskList"
-          :filteredTasks="filteredTasks"
-          :crossBtn="crossBtn"
-        />
+        <li v-for="task in filteredTasks" :key="task.id">
+          <ToDoTasks :taskList="taskList" :crossBtn="crossBtn" :task="task" />
+        </li>
       </ul>
     </section>
   </div>
