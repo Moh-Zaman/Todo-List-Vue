@@ -1,8 +1,8 @@
 <template>
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
-      <ul class="list-wrapper">
-        <li v-for="task in filteredTasks" :key="task.id">
+      <ul class="list-wrapper" id="sortable-list">
+        <li v-for="task in filteredTasks" :key="task.id" draggable="true">
           <ToDoTasks :taskList="taskList" :crossBtn="crossBtn" :task="task" />
         </li>
       </ul>
@@ -40,6 +40,42 @@
 <script>
 import cross from "../assets/images/icon-cross.svg";
 import ToDoTasks from "./ToDoTasks.vue";
+
+//Drag and Drop
+window.addEventListener("DOMContentLoaded", () => {
+  const list = document.getElementById("sortable-list");
+
+  let draggedItem = null;
+
+  // Drag start
+  list.addEventListener("dragstart", (event) => {
+    draggedItem = event.target;
+  });
+
+  // Drag over
+  list.addEventListener("dragover", (event) => {
+    event.preventDefault();
+  });
+
+  // Drag enter
+  list.addEventListener("dragenter", (event) => {
+    if (event.target.tagName === "LI" && event.target !== draggedItem) {
+    }
+  });
+
+  // Drop
+  list.addEventListener("drop", (event) => {
+    event.preventDefault();
+    if (event.target.tagName === "LI" && event.target !== draggedItem) {
+      const dropTarget = event.target;
+      if (dropTarget === list.firstElementChild) {
+        list.insertBefore(draggedItem, dropTarget);
+      } else {
+        list.insertBefore(draggedItem, dropTarget.nextSibling);
+      }
+    }
+  });
+});
 
 export default {
   name: "ToDoList",
