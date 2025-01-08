@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import cross from "../assets/images/icon-cross.svg";
 import ToDoTasks from "./ToDoTasks.vue";
 
 //Drag and Drop
@@ -86,7 +85,6 @@ export default {
     return {
       newTask: "",
       filter: "all",
-      crossBtn: cross,
     };
   },
   computed: {

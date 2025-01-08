@@ -17,12 +17,18 @@
 </template>
 
 <script>
+import crossBtn from "../assets/images/icon-cross.svg";
+
 export default {
   name: "ToDoTasks",
   props: {
     taskList: Object,
-    crossBtn: String,
     task: Object,
+  },
+  data() {
+    return {
+      crossBtn: crossBtn
+    }
   },
 };
 </script>
