@@ -5,8 +5,7 @@
         <input
           class="input-checkbox-field"
           type="checkbox"
-          v-model="checked"
-          @change="toggleAll"
+          @click="taskList.toggleAllTasks(taskList.allTasksChecked)"
         />
         <span class="checkmark"></span>
       </label>
@@ -16,40 +15,29 @@
         class="input-text-field"
         :placeholder="'Enter Tasks Here'"
         type="text"
+        autofocus
       />
     </form>
   </section>
-  <br />
 </template>
 
 <script>
 export default {
   name: "ToDoInput",
   props: {
-    isChecked: Boolean,
+    taskList: Object,
   },
   data() {
     return {
       newTask: "",
     };
   },
-  computed: {
-    checked: {
-      get() {
-        return this.isChecked;
-      },
-      set(value) {
-        this.$emit("toggle-all", value);
-      },
-    },
-  },
   methods: {
     addTask() {
-      this.$emit("add-task", this.newTask);
-      this.newTask = "";
-    },
-    toggleAll() {
-      this.$emit("toggle-all", this.checked);
+      if (this.newTask.trim()) {
+        this.taskList.addTaskHandler(this.newTask.trim());
+        this.newTask = "";
+      }
     },
   },
 };
@@ -63,6 +51,7 @@ export default {
   padding: 20px;
   width: 500px;
   margin: auto;
+  margin-bottom: 20px;
 }
 
 .input-form-wrapper {

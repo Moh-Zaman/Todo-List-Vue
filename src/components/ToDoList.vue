@@ -1,23 +1,15 @@
 <template>
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
-      <ul class="list-wrapper">
-        <li v-for="task in filteredTasks" :key="task.id">
-          <label class="checkbox-container-list">
-            <input
-              class="input-checkbox-field"
-              type="checkbox"
-              v-model="task.complete"
-              @click="childToggleCompleted(task.id)"
-            />
-            <span class="checkmark"> </span>
-          </label>
-          <span :class="{ 'completed-task': task.complete }">
-            {{ task.name }}
-          </span>
-          <span class="crossBtnIcon" @click="childDeleteOneTask(task.id)">
-            <img :src="crossBtn" />
-          </span>
+      <ul class="list-wrapper" id="sortable-list">
+        <li
+          v-for="[key, task] in (filteredTasks)"
+          :key="key"
+          draggable="true"
+          @click="taskEvents"
+          :data-task-id="key"
+        >
+          <ToDoTasks :task="task" />
         </li>
       </ul>
     </section>
@@ -45,52 +37,76 @@
     >
       Completed
     </span>
-    <span class="footer-clear-text" @click="childDeleteTasks">
+    <span class="footer-clear-text" @click="taskList.parentDeleteTasks()">
       Clear Completed
     </span>
   </section>
 </template>
 
 <script>
-import cross from "../assets/images/icon-cross.svg";
+import ToDoTasks from "./ToDoTasks.vue";
+
+//Drag and Drop
+window.addEventListener("DOMContentLoaded", () => {
+  const list = document.getElementById("sortable-list");
+
+  let draggedItem = null;
+
+  // Drag start
+  list.addEventListener("dragstart", (event) => {
+    draggedItem = event.target;
+  });
+
+  // Drag over
+  list.addEventListener("dragover", (event) => {
+    event.preventDefault();
+  });
+
+  // Drop
+  list.addEventListener("drop", (event) => {
+    event.preventDefault();
+    if (event.target.tagName === "LI" && event.target !== draggedItem) {
+      const dropTarget = event.target;
+      if (dropTarget === list.firstElementChild) {
+        list.insertBefore(draggedItem, dropTarget);
+      } else {
+        list.insertBefore(draggedItem, dropTarget.nextSibling);
+      }
+    }
+  });
+});
 
 export default {
   name: "ToDoList",
+  components: {
+    ToDoTasks,
+  },
   data() {
     return {
       newTask: "",
       filter: "all",
-      crossBtn: cross,
-      isChecked: false,
     };
   },
   computed: {
     taskCount() {
-      return this.tasks.filter((task) => !task.complete).length;
+      return Array.from(this.taskList.tasks.entries()).filter(([key, value]) => !value.complete).length
     },
     filteredTasks() {
+      const outputArray = Array.from(this.taskList.tasks.entries())
       if (this.filter === "active") {
-        return this.tasks.filter((task) => !task.complete);
+        return outputArray.filter(([key, value]) => !value.complete);
       } else if (this.filter === "completed") {
-        return this.tasks.filter((task) => task.complete);
-      } else return this.tasks;
+        return outputArray.filter(([key, value]) => !value.complete);
+      } else return outputArray
     },
     hideListAll() {
-      return {
-        "task-list-hide": this.tasks.length === 0,
+      const arrayLength = Array.from(this.taskList.tasks).filter((value) => !value.complete).length
+      return {        
+        "task-list-hide": arrayLength === 0,
       };
     },
   },
   methods: {
-    childDeleteTasks() {
-      this.$emit("clear-completed");
-    },
-    childToggleCompleted(id) {
-      this.$emit("toggle-completed", id);
-    },
-    childDeleteOneTask(id) {
-      this.$emit("delete-task", id);
-    },
     showList(display) {
       switch (display) {
         case "active":
@@ -104,12 +120,18 @@ export default {
           this.filter = "all";
       }
     },
+    taskEvents(event) {
+      const taskID = event.currentTarget.dataset.taskId;
+      const action = event.target.dataset.action
+      if (action === "complete") {
+        this.taskList.parentToggleCompleted(Number(taskID));
+      } else if (action === "delete") {
+        this.taskList.parentDeleteOneTask(Number(taskID));
+      }
+    },
   },
   props: {
-    tasks: {
-      type: Array,
-      required: true,
-    },
+    taskList: Object,
   },
 };
 </script>
