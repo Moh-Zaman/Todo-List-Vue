@@ -1,6 +1,7 @@
 export class TodoListClass {
   constructor(tasks = []) {
     this.tasks = tasks;
+    this.allTasksChecked = false;
   }
 
   addTaskHandler(newTask) {
@@ -27,7 +28,8 @@ export class TodoListClass {
   }
 
   toggleAllTasks(checked) {
-    this.tasks.forEach((task) => (task.complete = checked));
+    this.tasks.forEach((task) => (task.complete = !checked));
+    this.allTasksChecked = !checked
   }
 
   randomNumberGen() {
