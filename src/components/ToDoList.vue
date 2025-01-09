@@ -62,12 +62,6 @@ window.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
   });
 
-  // Drag enter
-  list.addEventListener("dragenter", (event) => {
-    if (event.target.tagName === "LI" && event.target !== draggedItem) {
-    }
-  });
-
   // Drop
   list.addEventListener("drop", (event) => {
     event.preventDefault();
