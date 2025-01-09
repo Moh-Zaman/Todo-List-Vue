@@ -1,30 +1,31 @@
 export class TodoListClass {
-  constructor(tasks = []) {
-    this.tasks = tasks;
+  constructor() {
+    this.tasks = new Map();
     this.allTasksChecked = false;
   }
 
   addTaskHandler(newTask) {
-    this.tasks.push({
-      id: this.randomNumberGen(),
-      name: newTask,
-      complete: false,
-    });
+    const guid = this.randomNumberGen()
+    this.tasks.set(guid, {id: guid, name: newTask, complete: false})
   }
 
   parentDeleteTasks() {
-    this.tasks = this.tasks.filter((task) => !task.complete);
+    this.tasks.forEach((task) => {
+      if(task.complete === true) {
+        this.tasks.delete(task.id)
+      }
+    })
   }
 
   parentToggleCompleted(id) {
-    const i = this.tasks.findIndex((task) => task.id === id);
-    if (i !== -1) {
-      this.tasks[i].complete = !this.tasks[i].complete;
+    const task = this.tasks.get(id)
+    if(task) {
+      task.complete = !task.complete
     }
   }
 
   parentDeleteOneTask(id) {
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+    this.tasks.delete(id)
   }
 
   toggleAllTasks(checked) {

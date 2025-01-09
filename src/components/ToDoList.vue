@@ -3,13 +3,13 @@
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
       <ul class="list-wrapper" id="sortable-list">
         <li
-          v-for="task in filteredTasks"
-          :key="task.id"
+          v-for="[key, task] in (filteredTasks)"
+          :key="key"
           draggable="true"
           @click="taskEvents"
-          :data-task-id="task.id"
+          :data-task-id="key"
         >
-          <ToDoTasks :taskList="taskList" :task="task" />
+          <ToDoTasks :task="task" />
         </li>
       </ul>
     </section>
@@ -89,18 +89,20 @@ export default {
   },
   computed: {
     taskCount() {
-      return this.taskList.tasks.filter((task) => !task.complete).length;
+      return Array.from(this.taskList.tasks.entries()).filter(([key, value]) => !value.complete).length
     },
     filteredTasks() {
+      const outputArray = Array.from(this.taskList.tasks.entries())
       if (this.filter === "active") {
-        return this.taskList.tasks.filter((task) => !task.complete);
+        return outputArray.filter(([key, value]) => !value.complete);
       } else if (this.filter === "completed") {
-        return this.taskList.tasks.filter((task) => task.complete);
-      } else return this.taskList.tasks;
+        return outputArray.filter(([key, value]) => !value.complete);
+      } else return outputArray
     },
     hideListAll() {
-      return {
-        "task-list-hide": this.taskList.tasks.length === 0,
+      const arrayLength = Array.from(this.taskList.tasks).filter((value) => !value.complete).length
+      return {        
+        "task-list-hide": arrayLength === 0,
       };
     },
   },

@@ -22,7 +22,6 @@ import cross from "../assets/images/icon-cross.svg";
 export default {
   name: "ToDoTasks",
   props: {
-    taskList: Object,
     task: Object,
   },
   data() {
