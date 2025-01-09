@@ -3,7 +3,6 @@
     <input
       class="input-checkbox-field"
       type="checkbox"
-      v-model="task.complete"
       data-action="complete"
     />
     <span class="checkmark"> </span>

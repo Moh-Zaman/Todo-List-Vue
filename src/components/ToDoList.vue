@@ -1,12 +1,11 @@
 <template>
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
-      <ul class="list-wrapper" id="sortable-list">
+      <ul class="list-wrapper" id="sortable-list" @click.capture="taskEvents">
         <li
           v-for="[key, task] in (filteredTasks)"
           :key="key"
           draggable="true"
-          @click="taskEvents"
           :data-task-id="key"
         >
           <ToDoTasks :task="task" />
@@ -89,14 +88,14 @@ export default {
   },
   computed: {
     taskCount() {
-      return Array.from(this.taskList.tasks.entries()).filter(([key, value]) => !value.complete).length
+      return Array.from(this.taskList.tasks.entries()).filter(([, value]) => !value.complete).length
     },
     filteredTasks() {
       const outputArray = Array.from(this.taskList.tasks.entries())
       if (this.filter === "active") {
-        return outputArray.filter(([key, value]) => !value.complete);
+        return outputArray.filter(([, value]) => !value.complete);
       } else if (this.filter === "completed") {
-        return outputArray.filter(([key, value]) => !value.complete);
+        return outputArray.filter(([, value]) => value.complete);
       } else return outputArray
     },
     hideListAll() {
@@ -121,12 +120,14 @@ export default {
       }
     },
     taskEvents(event) {
-      const taskID = event.currentTarget.dataset.taskId;
+      const targetEl = event.target.closest('[data-task-id]');
+      const taskID = targetEl.getAttribute('data-task-id');
       const action = event.target.dataset.action
       if (action === "complete") {
         this.taskList.parentToggleCompleted(Number(taskID));
       } else if (action === "delete") {
         this.taskList.parentDeleteOneTask(Number(taskID));
+        
       }
     },
   },
