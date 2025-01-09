@@ -26,23 +26,7 @@ export default {
   data() {
     return {
       newTask: "",
-      taskList: new TodoListClass([
-        {
-          id: 1,
-          name: "Placeholder 1",
-          complete: false,
-        },
-        {
-          id: 2,
-          name: "Placeholder 2",
-          complete: true,
-        },
-        {
-          id: 3,
-          name: "Placeholder 3",
-          complete: true,
-        },
-      ]),
+      taskList: new TodoListClass(),
     };
   },
   methods: {},

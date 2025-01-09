@@ -2,8 +2,14 @@
   <div>
     <section class="task-list-wrapper input-form-wrapper" :class="hideListAll">
       <ul class="list-wrapper" id="sortable-list">
-        <li v-for="task in filteredTasks" :key="task.id" draggable="true">
-          <ToDoTasks :taskList="taskList" :crossBtn="crossBtn" :task="task" />
+        <li
+          v-for="task in filteredTasks"
+          :key="task.id"
+          draggable="true"
+          @click="taskEvents"
+          :data-task-id="task.id"
+        >
+          <ToDoTasks :taskList="taskList" :task="task" />
         </li>
       </ul>
     </section>
@@ -116,6 +122,15 @@ export default {
         case "all":
         default:
           this.filter = "all";
+      }
+    },
+    taskEvents(event) {
+      const taskID = event.currentTarget.dataset.taskId;
+      const action = event.target.dataset.action
+      if (action === "complete") {
+        this.taskList.parentToggleCompleted(Number(taskID));
+      } else if (action === "delete") {
+        this.taskList.parentDeleteOneTask(Number(taskID));
       }
     },
   },

@@ -4,20 +4,20 @@
       class="input-checkbox-field"
       type="checkbox"
       v-model="task.complete"
-      @click="taskList.parentToggleCompleted(task.id)"
+      data-action="complete"
     />
     <span class="checkmark"> </span>
   </label>
   <span :class="{ 'completed-task': task.complete }">
     {{ task.name }}
   </span>
-  <span class="crossBtnIcon" @click="taskList.parentDeleteOneTask(task.id)">
-    <img :src="crossBtn" />
+  <span class="crossBtnIcon">
+    <img :src="crossBtn" data-action="delete" />
   </span>
 </template>
 
 <script>
-import crossBtn from "../assets/images/icon-cross.svg";
+import cross from "../assets/images/icon-cross.svg";
 
 export default {
   name: "ToDoTasks",
@@ -27,8 +27,8 @@ export default {
   },
   data() {
     return {
-      crossBtn: crossBtn
-    }
+      crossBtn: cross,
+    };
   },
 };
 </script>

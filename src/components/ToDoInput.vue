@@ -5,7 +5,7 @@
         <input
           class="input-checkbox-field"
           type="checkbox"
-          @click="taskList.toggleAllTasks(true)"
+          @click="taskList.toggleAllTasks(taskList.allTasksChecked)"
         />
         <span class="checkmark"></span>
       </label>
@@ -15,6 +15,7 @@
         class="input-text-field"
         :placeholder="'Enter Tasks Here'"
         type="text"
+        autofocus
       />
     </form>
   </section>
